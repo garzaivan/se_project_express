@@ -9,7 +9,7 @@ const getItems = (req, res) =>
   Item.find({})
     .then((items) => res.status(200).send(items))
     .catch(() => {
-      res
+      return res
         .status(serverError)
         .send({ message: "An error has occurred on the server." });
     });
