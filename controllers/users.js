@@ -1,4 +1,4 @@
-const user = require("../models/user");
+const User = require("../models/user");
 const {
   validationError,
   documentNotFoundError,
@@ -6,8 +6,7 @@ const {
 } = require("../utils/errors");
 
 const getUsers = (req, res) =>
-  user
-    .find({})
+  User.find({})
     .then((users) => res.status(200).send(users))
     .catch(() => {
       res
@@ -24,8 +23,7 @@ const createUser = (req, res) => {
       .send({ message: "Both 'name' and 'avatar' fields are required." });
   }
 
-  return user
-    .create({ name, avatar })
+  return User.create({ name, avatar })
     .then((user) => res.status(201).send(user))
     .catch((err) => {
       if (err.name === "ValidationError") {
@@ -42,8 +40,7 @@ const createUser = (req, res) => {
 
 const getUser = (req, res) => {
   const { userId } = req.params;
-  return user
-    .findById(userId)
+  return User.findById(userId)
     .orFail()
     .then((user) => res.status(200).send(user))
     .catch((err) => {
