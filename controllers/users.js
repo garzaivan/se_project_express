@@ -9,7 +9,7 @@ const getUsers = (req, res) =>
   User.find({})
     .then((users) => res.status(200).send(users))
     .catch(() => {
-      return res
+      res
         .status(serverError)
         .send({ message: "An error has occurred on the server." });
     });
