@@ -1,4 +1,4 @@
-const Item = require("../models/clothingItem");
+const clothingItem = require("../models/clothingItem");
 const {
   validationError,
   documentNotFoundError,
@@ -6,7 +6,8 @@ const {
 } = require("../utils/errors");
 
 const getItems = (req, res) =>
-  Item.find({})
+  clothingItem
+    .find({})
     .then((items) => res.status(200).send(items))
     .catch(() => {
       res
@@ -16,7 +17,7 @@ const getItems = (req, res) =>
 
 const createItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
-  const owner = req.user ? req.user._id : req.body.owner;
+  const owner = req.user._id;
 
   if (!name || !weather || !imageUrl || !owner) {
     return res
@@ -24,7 +25,8 @@ const createItem = (req, res) => {
       .send({ message: "All fields are required." });
   }
 
-  return Item.create({ name, weather, imageUrl, owner })
+  return clothingItem
+    .create({ name, weather, imageUrl, owner })
     .then((item) => res.status(201).send(item))
     .catch((err) => {
       if (err.name === "ValidationError") {
@@ -47,7 +49,8 @@ const createItem = (req, res) => {
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
 
-  return Item.findByIdAndDelete(itemId)
+  return clothingItem
+    .findByIdAndDelete(itemId)
     .orFail()
     .then((deletedItem) => res.status(200).send(deletedItem))
     .catch((err) => {
