@@ -5,7 +5,7 @@ const {
   serverError,
 } = require("../utils/errors");
 
-const getItems = (req, res) => {
+const getItems = (req, res) =>
   Item.find({})
     .then((items) => res.status(200).send(items))
     .catch(() => {
@@ -13,7 +13,6 @@ const getItems = (req, res) => {
         .status(serverError)
         .send({ message: "An error has occurred on the server." });
     });
-};
 
 const createItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
@@ -33,7 +32,8 @@ const createItem = (req, res) => {
           message:
             "Invalid data: please provide a valid 'name' (min length 2 max length 30) and a valid 'image' URL.",
         });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(validationError).send({
           message: "Invalid owner ID format. Please provide a valid user ID.",
         });
@@ -56,7 +56,8 @@ const deleteItem = (req, res) => {
         return res
           .status(documentNotFoundError)
           .send({ message: "Item not found with the provided ID." });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(validationError).send({
           message: "Invalid item ID format. Please provide a valid item ID.",
         });
