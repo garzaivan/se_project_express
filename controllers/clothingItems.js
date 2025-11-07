@@ -37,11 +37,10 @@ const createItem = (req, res) => {
         return res.status(validationError).send({
           message: "Invalid owner ID format. Please provide a valid user ID.",
         });
-      } else {
-        return res
-          .status(serverError)
-          .send({ message: "An error has occurred on the server." });
       }
+      return res
+        .status(serverError)
+        .send({ message: "An error has occurred on the server." });
     });
 };
 
@@ -61,11 +60,10 @@ const deleteItem = (req, res) => {
         return res.status(validationError).send({
           message: "Invalid item ID format. Please provide a valid item ID.",
         });
-      } else {
-        return res
-          .status(serverError)
-          .send({ message: "An error has occurred on the server." });
       }
+      return res
+        .status(serverError)
+        .send({ message: "An error has occurred on the server." });
     });
 };
 
