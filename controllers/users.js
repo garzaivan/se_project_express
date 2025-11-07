@@ -8,9 +8,10 @@ const {
 const getUsers = (req, res) => {
   User.find({})
     .then((users) => res.status(200).send(users))
-    .catch((err) => {
-      console.error(err);
-      return res.status(serverError).send({ message: err.message });
+    .catch(() => {
+      return res
+        .status(serverError)
+        .send({ message: "An error has occurred on the server." });
     });
 };
 
@@ -26,7 +27,6 @@ const createUser = (req, res) => {
   User.create({ name, avatar })
     .then((user) => res.status(201).send(user))
     .catch((err) => {
-      console.error(err);
       if (err.name === "ValidationError") {
         return res.status(validationError).send({
           message:
@@ -45,7 +45,6 @@ const getUser = (req, res) => {
     .orFail()
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res
           .status(documentNotFoundError)

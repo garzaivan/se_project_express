@@ -8,8 +8,7 @@ const {
 const getItems = (req, res) => {
   Item.find({})
     .then((items) => res.status(200).send(items))
-    .catch((err) => {
-      console.error(err);
+    .catch(() => {
       return res
         .status(serverError)
         .send({ message: "An error has occurred on the server." });
@@ -29,7 +28,6 @@ const createItem = (req, res) => {
   Item.create({ name, weather, imageUrl, owner })
     .then((item) => res.status(201).send(item))
     .catch((err) => {
-      console.error(err);
       if (err.name === "ValidationError") {
         return res.status(validationError).send({
           message:
@@ -54,7 +52,6 @@ const deleteItem = (req, res) => {
     .orFail()
     .then((deletedItem) => res.status(200).send(deletedItem))
     .catch((err) => {
-      console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res
           .status(documentNotFoundError)
