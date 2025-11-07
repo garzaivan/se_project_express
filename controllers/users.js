@@ -49,19 +49,20 @@ const getUser = (req, res) => {
         return res
           .status(documentNotFoundError)
           .send({ message: "User not found with the provided ID." });
-      } else if (err.name === "ValidationError") {
-        return res.status(validationError).send({
-          message: "Invalid user ID format. Please provide a valid user ID.",
-        });
-      } else if (err.name === "CastError") {
-        return res.status(validationError).send({
-          message: "Invalid user ID format. Please provide a valid user ID.",
-        });
-      } else {
-        return res
-          .status(serverError)
-          .send({ message: "An error has occurred on the server." });
       }
+      if (err.name === "ValidationError") {
+        return res.status(validationError).send({
+          message: "Invalid user ID format. Please provide a valid user ID.",
+        });
+      }
+      if (err.name === "CastError") {
+        return res.status(validationError).send({
+          message: "Invalid user ID format. Please provide a valid user ID.",
+        });
+      }
+      return res
+        .status(serverError)
+        .send({ message: "An error has occurred on the server." });
     });
 };
 

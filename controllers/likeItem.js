@@ -18,15 +18,15 @@ module.exports.likeItem = (req, res) => {
         return res
           .status(documentNotFoundError)
           .send({ message: "Item not found" });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(validationError).send({
           message: "Invalid item ID format. Please provide a valid item ID.",
         });
-      } else {
-        return res
-          .status(serverError)
-          .send({ message: "An error has occurred on the server." });
       }
+      return res
+        .status(serverError)
+        .send({ message: "An error has occurred on the server." });
     });
 };
 
@@ -43,14 +43,14 @@ module.exports.dislikeItem = (req, res) => {
         return res
           .status(documentNotFoundError)
           .send({ message: "Item not found" });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(validationError).send({
           message: "Invalid item ID format. Please provide a valid item ID.",
         });
-      } else {
-        return res
-          .status(serverError)
-          .send({ message: "An error has occurred on the server." });
       }
+      return res
+        .status(serverError)
+        .send({ message: "An error has occurred on the server." });
     });
 };
