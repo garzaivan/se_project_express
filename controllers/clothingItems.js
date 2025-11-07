@@ -24,7 +24,7 @@ const createItem = (req, res) => {
       .send({ message: "All fields are required." });
   }
 
-  Item.create({ name, weather, imageUrl, owner })
+  return Item.create({ name, weather, imageUrl, owner })
     .then((item) => res.status(201).send(item))
     .catch((err) => {
       if (err.name === "ValidationError") {
@@ -47,7 +47,7 @@ const createItem = (req, res) => {
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
 
-  Item.findByIdAndDelete(itemId)
+  return Item.findByIdAndDelete(itemId)
     .orFail()
     .then((deletedItem) => res.status(200).send(deletedItem))
     .catch((err) => {

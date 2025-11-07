@@ -23,7 +23,7 @@ const createUser = (req, res) => {
       .send({ message: "Both 'name' and 'avatar' fields are required." });
   }
 
-  User.create({ name, avatar })
+  return User.create({ name, avatar })
     .then((user) => res.status(201).send(user))
     .catch((err) => {
       if (err.name === "ValidationError") {
@@ -40,7 +40,7 @@ const createUser = (req, res) => {
 
 const getUser = (req, res) => {
   const { userId } = req.params;
-  User.findById(userId)
+  return User.findById(userId)
     .orFail()
     .then((user) => res.status(200).send(user))
     .catch((err) => {
