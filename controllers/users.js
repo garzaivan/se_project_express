@@ -5,7 +5,7 @@ const {
   serverError,
 } = require("../utils/errors");
 
-const getUsers = (req, res) => {
+const getUsers = (req, res) =>
   User.find({})
     .then((users) => res.status(200).send(users))
     .catch(() => {
@@ -13,7 +13,6 @@ const getUsers = (req, res) => {
         .status(serverError)
         .send({ message: "An error has occurred on the server." });
     });
-};
 
 const createUser = (req, res) => {
   const { name, avatar } = req.body;
