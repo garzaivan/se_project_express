@@ -5,10 +5,6 @@ const {
   serverError,
 } = require("../utils/errors");
 
-module.exports.createClothingItem = (req, res) => {
-  console.log(req.user._id);
-};
-
 const getItems = (req, res) => {
   Item.find({})
     .then((items) => res.status(200).send(items))
@@ -40,11 +36,9 @@ const createItem = (req, res) => {
             "Invalid data: please provide a valid 'name' (min length 2 max length 30) and a valid 'image' URL.",
         });
       } else if (err.name === "CastError") {
-        return res
-          .status(validationError)
-          .send({
-            message: "Invalid owner ID format. Please provide a valid user ID.",
-          });
+        return res.status(validationError).send({
+          message: "Invalid owner ID format. Please provide a valid user ID.",
+        });
       } else {
         return res
           .status(serverError)
