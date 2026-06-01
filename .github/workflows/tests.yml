@@ -24,6 +24,10 @@ jobs:
   test_endpoints:
     if: ${{ github.repository != 'tripleten-com/se_project_express' }}
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+    with:
+    node-version: 24.x
     needs: read_sprint_file
     steps:
       - name: Set up GitHub Actions
