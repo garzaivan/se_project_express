@@ -1,23 +1,25 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const mainRouter = require("./routes/index");
+const cors = require("cors");
 
 const app = express();
 const { PORT = 3001 } = process.env;
 
-mongoose.connect("mongodb://127.0.0.1:27017/wtwr_db");
+mongoose
+  .connect("mongodb://127.0.0.1:27017/wtwr_db")
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error(err));
 
 app.use(express.json());
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: "690d0ddb583d1fdba18b3a20",
-  };
-  next();
-});
 app.use("/", mainRouter);
 app.use((req, res) => {
   res.status(404).send({ message: "Requested resource not found" });
 });
 
-app.listen(PORT);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+app.use(cors());
