@@ -7,12 +7,6 @@ const {
 } = require("../controllers/users");
 const auth = require("../middlewares/auth");
 
-router.post("/signin", login);
-router.post("/signup", createUser);
-router.get("/items", (req, res) => {
-  res.send({ message: "Public items route" });
-});
-
 router.use(auth);
 
 router.get("/me", getCurrentUser);

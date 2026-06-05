@@ -3,6 +3,7 @@ const {
   validationError,
   documentNotFoundError,
   serverError,
+  unauthorizedError,
 } = require("../utils/errors");
 
 module.exports.likeItem = (req, res) => {

@@ -1,12 +1,14 @@
-const ClothingItem = require("../models/clothingItem");
+const clothingItem = require("../models/clothingItem");
 const {
   validationError,
   documentNotFoundError,
   serverError,
+  unauthorizedError,
 } = require("../utils/errors");
 
 const getItems = (req, res) =>
-  ClothingItem.find({})
+  clothingItem
+    .find({})
     .then((items) => res.status(200).send(items))
     .catch(() => {
       res
@@ -24,7 +26,8 @@ const createItem = (req, res) => {
       .send({ message: "All fields are required." });
   }
 
-  return ClothingItem.create({ name, weather, imageUrl, owner })
+  return clothingItem
+    .create({ name, weather, imageUrl, owner })
     .then((item) => res.status(201).send(item))
     .catch((err) => {
       if (err.name === "ValidationError") {
@@ -48,7 +51,8 @@ const deleteItem = (req, res) => {
   const { itemId } = req.params;
   const userId = req.user._id;
 
-  return ClothingItem.findById(itemId)
+  return clothingItem
+    .findById(itemId)
     .orFail()
     .then((item) => {
       if (item.owner.toString() !== userId) {
@@ -57,9 +61,9 @@ const deleteItem = (req, res) => {
         });
       }
 
-      return ClothingItem.findByIdAndDelete(itemId).then((deletedItem) =>
-        res.status(200).send(deletedItem)
-      );
+      return clothingItem
+        .findByIdAndDelete(itemId)
+        .then((deletedItem) => res.status(200).send(deletedItem));
     })
     .catch((err) => {
       if (err.name === "DocumentNotFoundError") {
