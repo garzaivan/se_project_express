@@ -12,3 +12,8 @@ The back-end project is focused on creating a server for the WTWR application. T
 - MongoDb Compass
 - EsLint
 - Prettier
+
+## Project Pitch Video
+
+Check out [this video](https://drive.google.com/file/d/1FktZ55kniY3KKvyzMRJcwQ5uMRQvvMGn/view?usp=sharing), where I describe my
+project and some challenges I faced while building it.
