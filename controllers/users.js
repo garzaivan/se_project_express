@@ -10,7 +10,8 @@ const {
 } = require("../utils/errors");
 
 const getUsers = (req, res) =>
-  User.find({})
+  user
+    .find({})
     .then((users) => res.status(200).send(users))
     .catch(() => {
       res
@@ -30,7 +31,7 @@ const createUser = (req, res) => {
   return bcrypt
     .hash(password, 10)
     .then((hash) =>
-      User.create({
+      user.create({
         name,
         avatar,
         email,
@@ -66,7 +67,8 @@ const createUser = (req, res) => {
 
 const getCurrentUser = (req, res) => {
   const userId = req.user._id;
-  return User.findById(userId)
+  return user
+    .findById(userId)
     .orFail()
     .then((user) => res.status(200).send(user))
     .catch((err) => {
@@ -100,7 +102,8 @@ const login = (req, res) => {
     });
   }
 
-  return User.findUserByCredentials(email, password)
+  return user
+    .findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
@@ -119,14 +122,15 @@ const updateUser = (req, res) => {
   const userId = req.user._id;
   const { name, avatar } = req.body;
 
-  return User.findByIdAndUpdate(
-    userId,
-    { name, avatar },
-    {
-      new: true,
-      runValidators: true,
-    }
-  )
+  return user
+    .findByIdAndUpdate(
+      userId,
+      { name, avatar },
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
     .orFail()
     .then((user) => res.status(200).send(user))
     .catch((err) => {
