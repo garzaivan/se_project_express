@@ -3,7 +3,7 @@ const {
   validationError,
   documentNotFoundError,
   serverError,
-  unauthorizedError,
+  forbiddenError,
 } = require("../utils/errors");
 
 const getItems = (req, res) =>
@@ -56,7 +56,7 @@ const deleteItem = (req, res) => {
     .orFail()
     .then((item) => {
       if (item.owner.toString() !== userId) {
-        return res.status(403).send({
+        return res.status(forbiddenError).send({
           message: "You are not allowed to delete this item",
         });
       }

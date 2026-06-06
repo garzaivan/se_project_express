@@ -10,8 +10,8 @@ app.use(cors());
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error(err));
+  .then(() => {})
+  .catch(() => {});
 
 app.use(express.json());
 
@@ -22,6 +22,4 @@ app.use((req, res) => {
     .send({ message: "Requested resource not found" });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT);

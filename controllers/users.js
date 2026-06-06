@@ -7,6 +7,7 @@ const {
   documentNotFoundError,
   serverError,
   unauthorizedError,
+  conflictError,
 } = require("../utils/errors");
 
 const getUsers = (req, res) =>
@@ -38,15 +39,15 @@ const createUser = (req, res) => {
         password: hash,
       })
     )
-    .then((user) => {
-      const userResponse = user.toObject();
+    .then((createdUser) => {
+      const userResponse = createdUser.toObject();
       delete userResponse.password;
 
       res.status(201).send(userResponse);
     })
     .catch((err) => {
       if (err.code === 11000) {
-        return res.status(409).send({
+        return res.status(conflictError).send({
           message: "A user with this email already exists.",
         });
       }
@@ -70,7 +71,7 @@ const getCurrentUser = (req, res) => {
   return user
     .findById(userId)
     .orFail()
-    .then((user) => res.status(200).send(user))
+    .then((createdUser) => res.status(200).send(createdUser))
     .catch((err) => {
       if (err.name === "DocumentNotFoundError") {
         return res
@@ -104,16 +105,22 @@ const login = (req, res) => {
 
   return user
     .findUserByCredentials(email, password)
-    .then((user) => {
-      const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+    .then((foundUser) => {
+      const token = jwt.sign({ _id: foundUser._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
 
       res.status(200).send({ token });
     })
-    .catch(() => {
-      res.status(unauthorizedError).send({
-        message: "Incorrect email or password",
+    .catch((err) => {
+      if (err.message === "Unauthorized") {
+        return res.status(unauthorizedError).send({
+          message: "Incorrect email or password",
+        });
+      }
+
+      return res.status(serverError).send({
+        message: "An error has occurred on the server.",
       });
     });
 };
@@ -132,7 +139,7 @@ const updateUser = (req, res) => {
       }
     )
     .orFail()
-    .then((user) => res.status(200).send(user))
+    .then((currentUser) => res.status(200).send(currentUser))
     .catch((err) => {
       if (err.name === "DocumentNotFoundError") {
         return res
